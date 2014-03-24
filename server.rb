@@ -3,7 +3,11 @@ require 'sinatra'
 require './lib/link'
 require './lib/tag'
 require './lib/user'
+require 'rack-flash'
+
 require_relative 'views/helpers/application'
+
+use Rack::Flash  
 
 env = ENV["RACK_ENV"] || "development"
 DataMapper.setup(:default, "postgres://localhost/bookmark_manager_#{env}")
@@ -38,15 +42,21 @@ class BookmarkManager < Sinatra::Application
 	end
 
  	get '/users/new' do
+ 		@user = User.new
  		erb :"users/new"
  	end
 
  	post '/users' do
- 		user = User.create(:email 		=> params[:email],
+ 		@user = User.create(:email 		=> params[:email],
  								:password => params[:password],
  								:password_confirmation => params[:password_confirmation])
- 		session[:user_id] = user.id
- 		redirect to('/')
+ 		if @user.save
+ 			session[:user_id] = @user.id
+ 			redirect to('/')
+ 		else
+ 			flash[:notice] = "Sorry, your passwords don't match"
+ 			erb :"users/new"
+ 		end
  	end
 
 
