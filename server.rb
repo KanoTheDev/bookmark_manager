@@ -13,12 +13,11 @@ DataMapper.auto_upgrade!
 class BookmarkManager < Sinatra::Application
 
 	get '/' do
-	 @links = Link.all
-	 erb :index
+		@links = Link.all
+		erb :index
 	end
 
 	post '/links' do
-
 		url = params["url"]
 		title = params["title"]
 		tags = params["tags"].split(" ").map do |tag|
@@ -26,6 +25,12 @@ class BookmarkManager < Sinatra::Application
 		end
 		Link.create(:url => url, :title => title, :tags => tags)
 		redirect to('/')
+	end
+
+	get '/tags/:text' do
+		tag = Tag.first(:text => params[:text])
+		@links = tag ? tag.links : []
+		erb :index
 	end
 
 end
