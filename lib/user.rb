@@ -1,14 +1,13 @@
 require 'bcrypt'
 class User
-
+	
 	include DataMapper::Resource
 	attr_reader :password
 	attr_accessor :password_confirmation
-
-	validates_confirmation_of :password
+	validates_confirmation_of :password, :message => "Sorry, your passwords don't match"
 
 	property :id, Serial
-	property :email, String
+	property :email, String, :unique => true, :message => "This email is already taken"
 	property :password_digest, Text
 
 	def password=(password)
