@@ -4,6 +4,7 @@ require './lib/link'
 require './lib/tag'
 require './lib/user'
 require 'rack-flash'
+#require 'rest-client'
 
 require_relative 'views/helpers/application'
 
