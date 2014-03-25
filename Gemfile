@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+gem 'ruby' '2.1.0'
 gem 'sinatra' 
 gem 'shotgun'
 gem 'sinatra-partial'
