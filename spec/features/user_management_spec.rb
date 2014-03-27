@@ -61,3 +61,33 @@ feature "User signs out" do
 			expect(page).not_to have_content("Welcome, test@test.com")
 		end
 end
+
+feature "User forgets password and fills password reset form" do
+
+	before(:each) do
+		user = User.create(:email => "test@test.com", 
+								:password => 'test',
+								:password_confirmation => 'test')
+	end
+
+	scenario 'with correct email' do
+		visit '/users/reset_password'
+    fill_in :email, :with => 'test@test.com'
+    click_button "Reset"
+    expect(page).to have_content("Password reset link sent to your email")
+    expect(User.first.reset_token).not_to eq nil
+    expect(User.first.reset_token_exp_date).not_to eq nil
+	end
+
+	scenario 'with incorrect email' do
+		visit '/users/reset_password'
+    fill_in :email, :with => 'spam@test.com'
+    click_button "Reset"
+    expect(page).not_to have_content("Password reset link sent to your email")
+    expect(page).to have_content("Try again with correct email.")
+    expect(User.first.reset_token).to eq nil
+    expect(User.first.reset_token_exp_date).to eq nil
+	end
+
+
+end

@@ -82,4 +82,22 @@ class BookmarkManager < Sinatra::Application
     redirect to('/')
   end
 
+  get '/users/reset_password' do
+  	erb :"users/reset_password"
+  end
+
+ 	post '/users/reset_password' do
+ 		user = User.first(:email => params[:email])
+ 		if user
+ 			user.password_token = (1..64).map{('A'..'Z').to_a.sample}.join
+ 			user.password_token_timestamp = Time.now
+ 			user.save
+  		flash[:notice] = "Password reset link sent to your email"
+  		erb :"users/reset_password"
+  	else
+  		flash[:errors] = ["Try again with correct email."]
+  		erb :"users/reset_password"
+  	end
+
+  end
 end
