@@ -5,7 +5,7 @@
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 ENV["RACK_ENV"] = 'test'
-require './server'
+require './app'
 require 'database_cleaner'
 require 'capybara/rspec'
 
@@ -25,6 +25,7 @@ RSpec.configure do |config|
   config.order = 'random'
 
   config.before(:suite) do
+
     DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.clean_with(:truncation)
   end

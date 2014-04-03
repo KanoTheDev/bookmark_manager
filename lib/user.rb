@@ -1,5 +1,7 @@
 require 'bcrypt'
 class User
+
+
 	
 	include DataMapper::Resource
 	attr_reader :password
@@ -11,6 +13,8 @@ class User
 	property :email, String, :unique => true, :message => "This email is already taken"
 	property :password_digest, Text
 	property :password_token, Text
+	property :pass_token_exp_date, DateTime
+
 
 	def password=(password)
 		@password = password
@@ -26,8 +30,19 @@ class User
 		end
 	end
 
-	def password_token
-		password_token
+	def send_token
+		RestClient.post "https://api:key-8yeqz3amluwtgbiyuepc4a1tixryzqg6"\
+	  "@api.mailgun.net/v2/sandbox10147.mailgun.org/messages",
+	  :from => "Nobody knows <postmaster@sandbox10147.mailgun.org>",
+	  :to => "<#{self.email}>",
+	  :subject => "Reset password instruction",
+	  :text => "Someone has requested a link to change your password,
+	   and you can do this by using this link bellow
+	   http://localhost:4567/users/reset_password/#{self.password_token}"
+	end
+
+	def delete_token
+		self.password_token = ''
 	end
 
 end

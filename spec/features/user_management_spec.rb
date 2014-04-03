@@ -65,7 +65,7 @@ end
 feature "User forgets password and fills password reset form" do
 
 	before(:each) do
-		user = User.create(:email => "test@test.com", 
+		user = User.create(:email => 'test@test.com', 
 								:password => 'test',
 								:password_confirmation => 'test')
 	end
@@ -75,8 +75,8 @@ feature "User forgets password and fills password reset form" do
     fill_in :email, :with => 'test@test.com'
     click_button "Reset"
     expect(page).to have_content("Password reset link sent to your email")
-    expect(User.first.reset_token).not_to eq nil
-    expect(User.first.reset_token_exp_date).not_to eq nil
+    expect(User.first.password_token).not_to eq nil    
+    expect(User.first.pass_token_exp_date).not_to eq nil
 	end
 
 	scenario 'with incorrect email' do
@@ -85,9 +85,46 @@ feature "User forgets password and fills password reset form" do
     click_button "Reset"
     expect(page).not_to have_content("Password reset link sent to your email")
     expect(page).to have_content("Try again with correct email.")
-    expect(User.first.reset_token).to eq nil
-    expect(User.first.reset_token_exp_date).to eq nil
+    expect(User.first.password_token).to eq nil
+    expect(User.first.pass_token_exp_date).to eq nil
 	end
+
+end
+
+
+feature "User gets the link to reset password" do
+	before(:each) do
+		User.create(:email => 'test@test.com', 
+								:password => 'forgotten_password',
+								:password_confirmation => 'forgotten_password',
+								:password_token => 'RESET_TOKEN')
+	end
+
+	scenario 'presses the link and fills two fields correcty' do
+
+		visit "/users/reset_password/RESET_TOKEN"
+		expect(page).to have_content("Please set new password for your account")
+		fill_in 'email', :with => 'test@test.com'
+		fill_in 'password', :with => 'new_password'
+		fill_in 'password_confirmation', :with => 'new_password'
+		click_button 'Set password'
+		# expect(page).to have_content("Password saved successfuly!")
+		sign_in('test@test.com','new_password')
+		expect(page).to have_content("Welcome, test@test.com")
+	end
+
+	scenario 'presses the link and fills two fields incorrecty' do
+
+		user = User.find(:password_token => 'ASDF')
+		visit "/users/reset_password/RESET_TOKEN"
+		expect(page).to have_content("Please set new password for your account")
+		fill_in 'email', :with => 'test@test.com'
+		fill_in 'password', :with => 'qwerty'
+		fill_in 'password_confirmation', :with => 'qwert'
+		click_button 'Set password'
+		expect(page).to have_content("Try again with same passwords.")
+	end
+
 
 
 end

@@ -18,6 +18,11 @@ DataMapper.auto_upgrade!
 enable :sessions
 set :session_secret, 'superpass sdfsdfsdf'
 
+# User.create(:email => 'audejas@gmail.com', 
+# 								:password => 'test',
+# 								:password_confirmation => 'test',
+# 								:password_token => 'MTNDNPDZVLCZUAYRTWUHUDCSKOVDJMOPOKKGZOXGBMIVOYIIIZBRWKUYVLCCDUFC'
+# 								)
 
 class BookmarkManager < Sinatra::Application
 
@@ -90,14 +95,32 @@ class BookmarkManager < Sinatra::Application
  		user = User.first(:email => params[:email])
  		if user
  			user.password_token = (1..64).map{('A'..'Z').to_a.sample}.join
- 			user.password_token_timestamp = Time.now
+ 			user.pass_token_exp_date = Time.now
  			user.save
+ 			user.send_token
+ 			user.delete_token
   		flash[:notice] = "Password reset link sent to your email"
   		erb :"users/reset_password"
   	else
   		flash[:errors] = ["Try again with correct email."]
   		erb :"users/reset_password"
   	end
-
   end
+
+  get "/users/reset_password/:token" do
+  	erb :"users/set_new_password"
+	end
+
+	post "/users/set_new_password" do
+		user = User.first(:email => params[:email], :password_token => params[:token])
+		if params[:password] == params[:password_confirmation] && params[:password]
+			user.update(:password => params[:password],
+ 									:password_confirmation => params[:password_confirmation])
+			flash[:notice] = "Password saved successfully"
+			redirect to('/sessions/new')
+		else
+			flash[:errors] = ["Try again with same passwords."]
+			erb :"users/set_new_password"
+		end
+	end
 end
