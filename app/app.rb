@@ -3,17 +3,16 @@ require 'sinatra'
 require 'sinatra/partial'
 require 'rack-flash'
 require 'rest_client'
-require './app/models/link'
-require './app/models/tag'
-require './app/models/user'
+require_relative 'models/link'
+require_relative 'models/tag'
+require_relative 'models/user'
+require_relative 'helpers/application'
+require_relative 'data_mapper_setup'
 require_relative 'views/helpers/application'
 
 use Rack::Flash  
 
-env = ENV["RACK_ENV"] || "development"
-DataMapper.setup(:default, "postgres://localhost/bookmark_manager_#{env}")
-DataMapper.finalize
-DataMapper.auto_upgrade!
+
 
 enable :sessions
 set :session_secret, 'superpass sdfsdfsdf'
