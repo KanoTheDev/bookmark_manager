@@ -5,7 +5,7 @@
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 ENV["RACK_ENV"] = 'test'
-require './app'
+require './app/app'
 require 'database_cleaner'
 require 'capybara/rspec'
 

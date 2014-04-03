@@ -1,5 +1,5 @@
 require 'rubygems'
 require 'sinatra/base'
-require './app.rb'
+require './app/app.rb'
 
 run BookmarkManager

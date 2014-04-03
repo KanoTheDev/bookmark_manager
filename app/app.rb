@@ -1,12 +1,11 @@
 require 'data_mapper'
 require 'sinatra'
 require 'sinatra/partial'
-require './lib/link'
-require './lib/tag'
-require './lib/user'
 require 'rack-flash'
 require 'rest_client'
-
+require './app/models/link'
+require './app/models/tag'
+require './app/models/user'
 require_relative 'views/helpers/application'
 
 use Rack::Flash  
