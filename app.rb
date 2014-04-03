@@ -1,5 +1,6 @@
 require 'data_mapper'
 require 'sinatra'
+require 'sinatra/partial'
 require './lib/link'
 require './lib/tag'
 require './lib/user'
@@ -17,6 +18,7 @@ DataMapper.auto_upgrade!
 
 enable :sessions
 set :session_secret, 'superpass sdfsdfsdf'
+set :partial_template_engine, :erb
 
 # User.create(:email => 'audejas@gmail.com', 
 # 								:password => 'test',
