@@ -8,21 +8,13 @@ require_relative 'models/tag'
 require_relative 'models/user'
 require_relative 'helpers/application'
 require_relative 'data_mapper_setup'
-require_relative 'views/helpers/application'
 
 use Rack::Flash  
-
-
 
 enable :sessions
 set :session_secret, 'superpass sdfsdfsdf'
 set :partial_template_engine, :erb
 
-# User.create(:email => 'audejas@gmail.com', 
-# 								:password => 'test',
-# 								:password_confirmation => 'test',
-# 								:password_token => 'MTNDNPDZVLCZUAYRTWUHUDCSKOVDJMOPOKKGZOXGBMIVOYIIIZBRWKUYVLCCDUFC'
-# 								)
 
 class BookmarkManager < Sinatra::Application
 
