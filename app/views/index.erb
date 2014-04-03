@@ -1,7 +1,9 @@
 <h1> Welcome </h1>
 
-<ul>
-  <% @links.each do |link| %>
-    <li><a href="<%= link.url %>"><%= link.title %></a></li>
-  <% end %>
-</ul>
+<div id="links-container">
+	<ul id="links">
+  	<% @links.each do |link| %>
+    	<%= partial :link, :locals => {:link => link} %>
+    <% end %>
+	</ul>
+</div>

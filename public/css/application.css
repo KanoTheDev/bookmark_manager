@@ -4,21 +4,20 @@ body {
 }
 
 a.button {
-  display: inline-block; /* display inline but have dimensions */
+  display: inline-block; 
   width: 80px;
   background-color: #82B743;
   border: 2px solid white;
-  color: white; /*text colour*/
-  text-decoration: none; /*no underlining*/
+  color: white; 
+  text-decoration: none; 
   padding: 5px 10px;
   text-align: center;
-  border-radius: 4px; /*rounded corners*/
+  border-radius: 4px; 
   margin-left: 5px;
   margin-right: 5px;
-  text-shadow: 0 0 2px rgba(0,0,0, 0.4); /*for readability*/
+  text-shadow: 0 0 2px rgba(0,0,0, 0.4);
 }
 
-/* a link that has both classes. Overrides the previous declaration */
 a.button.highlighted {
   background-color: #b77843;
 }
@@ -46,7 +45,27 @@ header {
   }
 
   header #user-links {
-    flex: 1; /* http://learnlayout.com/flexbox.html */
+    flex: 1;
     -webkit-flex: 1;
     text-align: right;  
   }
+
+  .link {
+  background-color: #EEE;
+  box-shadow: 0 0 5px rgba(0,0,0,0.4);
+  margin: 10px inherit;
+  padding: 15px 10px;
+}
+
+  .link a.title {
+    letter-spacing: 1px;
+  }
+
+  .link .description {
+    margin: 10px inherit;
+  }
+
+  .link .source {
+    float: right; 
+    font-size: 12px;
+  }t                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
