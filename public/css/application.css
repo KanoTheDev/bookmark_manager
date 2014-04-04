@@ -1,11 +1,17 @@
 * {
   box-sizing: border-box;
+  margin: 0;
 }
 
 body {
   font-family: Helvetica, Arial, Sans-serif;
   background-image: url(/images/extra_clean_paper.png);
   color: #333;  
+  height: 100%;
+}
+
+html {
+height: 100%;
 }
 
 a {
@@ -107,6 +113,13 @@ header {
     font-size: 12px;
   }
 
+.wrapper {
+min-height: 100%;
+height: auto !important;
+height: 100%;
+margin: -1 auto -4em;
+}
+
 footer {
   display: flex;
   background-color: rgba(0,0,0,0.2);
@@ -127,4 +140,5 @@ footer {
 
   footer p {
     padding: 5px 25px;
+
   }
